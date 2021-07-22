@@ -2,13 +2,22 @@ import { initRoutes, RestRoute } from './routes.init'
 import { initUws } from './uws'
 import { openApiInit } from '../openapi/openApi.init'
 import { RestNoteConfig } from './definitions'
-// import { initFastify } from './fastify'
 
-export function RestNote(config: RestNoteConfig) {
-  const routes = initRoutes(config.controllers)
+export type RiDoc = any
+
+interface RestInNoteInstance {
+  doc: RiDoc
+  routes: RestRoute[]
+}
+
+export async function RestNote(config: RestNoteConfig): Promise<RestInNoteInstance> {
+  const routes = initRoutes(config.controllers) as RestRoute[]
   const doc = openApiInit(routes, config)
-  config.uwsApp && initUws(routes, config)
-  // config.fastify && initFastify(routes, config)
+  config.uwsApp && (await initUws(routes, config))
+  return {
+    doc,
+    routes,
+  }
 }
 
 export default RestNote

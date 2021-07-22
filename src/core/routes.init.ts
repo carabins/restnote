@@ -1,4 +1,5 @@
 import { decoContentHeaders } from './decorators'
+import ContentTypeHead from '../contentTypeHead'
 
 export type RestRoute = {
   name: string
@@ -9,7 +10,8 @@ export type RestRoute = {
   type: string
   handler: any
   parent: any
-  headers?: string[]
+  contentHeader: string
+  // headers?: string[]
 }
 
 enum Type {
@@ -49,10 +51,11 @@ export function initRoutes(controllers) {
       if (params.length > 1) {
         params = params[1].split(strAnd).map(s => s.toLocaleLowerCase())
       } else {
+        params = []
       }
       let pattern = name ? '/' + name.toLowerCase() : ''
       let openPattern = pattern
-      if (params.length > 1) {
+      if (params.length >= 1) {
         params.forEach(p => {
           if (p.length) {
             pattern += '/:' + p
@@ -60,12 +63,15 @@ export function initRoutes(controllers) {
           }
         })
       }
+      // console.log({ params, pattern })
       const controllerName = controllerKey.split('Controller')[0].toLowerCase()
       if (controllerName != 'index') {
         pattern = '/' + controllerName + pattern
         openPattern = '/' + controllerName + openPattern
       }
-      const contentHeader = decoContentHeaders.get(protoOfInstance)
+      const instanceHeaders = decoContentHeaders.get(protoOfInstance)
+      let h1 = instanceHeaders ? instanceHeaders[fieldName] : false
+      const contentHeader = h1 ? h1 : ContentTypeHead.applicationJson
       routes.push({
         name: fieldName,
         controllerName,
@@ -75,7 +81,8 @@ export function initRoutes(controllers) {
         handler,
         parent: parentInstance,
         type,
-        headers: contentHeader && [contentHeader],
+        contentHeader,
+        // headers: [contentHeader],
       })
     })
   })

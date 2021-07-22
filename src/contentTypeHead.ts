@@ -6,3 +6,9 @@ export const ContentTypeHead = {
 }
 
 export default ContentTypeHead
+
+export const CORS = [
+  ['access-control-allow-origin', '*'],
+  ['access-control-allow-methods', '*'],
+  ['access-control-allow-headers', '*'],
+]

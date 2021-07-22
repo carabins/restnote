@@ -15,7 +15,7 @@ export interface OpenResponse {
 }
 
 export type OpenApiBodyRes = {
-  responses?: OpenResponse[]
+  response?: OpenResponse
   body?: any
   description?: string
 }

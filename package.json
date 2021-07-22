@@ -1,6 +1,6 @@
 {
   "name": "rinote",
-  "version": "0.0.5",
+  "version": "0.0.13-ultra",
   "description": "Rest in note - web server",
   "author": "dev@gleb.pw",
   "license": "ISC",
@@ -27,7 +27,6 @@
     "reflect-metadata": "^0.1.13"
   },
   "files": [
-    "lib/**/*",
-    "openapi/**/*"
+    "lib/**/*"
   ]
 }
